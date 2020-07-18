@@ -28,10 +28,10 @@ Stack.prototype.length = function() {
 var simplifyPath = function(path) {
     const arr = path.split('');
     const stack = new Stack();
-    // 当前目录
+    // 当前目录 /./ /. 两种情况
     const dotReg = /\/\.\/.+/;
     const dotReg2 = /\/\.undefinedundefined/;
-    // 返回上一级目录
+    // 返回上一级目录 /../ /.. 两种情况
     const dotdotReg = /\/\.\.\//;
     const dotdotReg2 = /\/\.\.undefined/;
 
@@ -73,7 +73,6 @@ var simplifyPath = function(path) {
                     dotdotReg2.test(temp)
                 ) {
                     //如果是返回上一级
-                    // 删除点
                     arr.shift();
                     back(stack);
                 } else {
@@ -86,7 +85,7 @@ var simplifyPath = function(path) {
         }
     }
 
-    let result = stack.stack.join('')
+    let result = stack.stack.join('');
     if (result[result.length - 1] === '/' && result.length !== 1) {
         result = result.slice(0, result.length - 1);
     }

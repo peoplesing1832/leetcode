@@ -1,3 +1,5 @@
+// 模拟乘法即可
+
 /**
  * @param {string} num1
  * @param {string} num2

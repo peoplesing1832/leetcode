@@ -1,3 +1,6 @@
+
+// 思路: 使用bfs遍历
+
 /**
  * @param {number[][]} grid
  * @return {number}

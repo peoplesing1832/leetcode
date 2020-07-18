@@ -1,4 +1,4 @@
-
+// 双指针 + hash去重
 /**
  * @param {string} s
  * @return {number}

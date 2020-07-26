@@ -53,13 +53,70 @@ class Graph {
 
     /**
      * 图的广度优先遍历
+     * node 遍历的起点
      */
-    bfs () {
+    bfs (node) {
+        if (this.adjacencyList.has(node)) {
+            const result = [];
+            const hash = {};
+            const queue = [];
+            const nodes = this.adjacencyList.keys();
+            for (let node of nodes) {
+                hash[node] = false;
+            }
+            hash[node] = true;
+            queue.push(node);
+            result.push(node);
+            while (queue.length > 0) {
+                let q = queue.shift();
+                let list = this.adjacencyList.get(q);
+                for (let i = 0; i < list.length; i++) {
+                    let temp = list[i]
+                    if (!hash[temp]) {
+                        result.push(temp)
+                        hash[temp] = true
+                        queue.push(temp)
+                    }
+                }
+            }
+            return result;
+        }
+        return null
     }
 
     /**
      * 图的深度优先遍历
      */
-    dfs () {
+    dfs (node) {
     }
 }
+
+const graph = new Graph(6)
+// 添加节点
+graph.addNode('A')
+graph.addNode('B')
+graph.addNode('C')
+graph.addNode('D')
+graph.addNode('E')
+graph.addNode('F')
+// 添加边
+graph.addEdge('A', 'B')
+graph.addEdge('A', 'D')
+graph.addEdge('A', 'E')
+graph.addEdge('B', 'A')
+graph.addEdge('B', 'C')
+graph.addEdge('C', 'B')
+graph.addEdge('C', 'E')
+graph.addEdge('C', 'F')
+graph.addEdge('D', 'A')
+graph.addEdge('D', 'E')
+graph.addEdge('E', 'A')
+graph.addEdge('E', 'C')
+graph.addEdge('E', 'D')
+graph.addEdge('E', 'F')
+graph.addEdge('F', 'C')
+graph.addEdge('F', 'E')
+
+const result = graph.bfs('A')
+
+console.log(result)

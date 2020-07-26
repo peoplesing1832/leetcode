@@ -31,9 +31,14 @@ class Graph {
             this.adjacencyList.has(to) &&
             this.adjacencyList.has(from)
         ) {
+            // 做一个去重
+            let toAdjacent = this.adjacencyList.get(to)
+            let fromAdjacent = this.adjacencyList.get(from)
+            toAdjacent = [...new Set([...toAdjacent, from])];
+            fromAdjacent = [... new Set([...fromAdjacent, to])];
             // 无向图，所以边是连接两边的
-            this.adjacencyList.get(to).push(from);
-            this.adjacencyList.get(from).push(to);
+            this.adjacencyList.set(to, toAdjacent);
+            this.adjacencyList.set(from, fromAdjacent); 
         }
     }
 
@@ -44,5 +49,17 @@ class Graph {
             const neighborsString = neighbors.join(' ');
             console.log(`节点${node}, 相邻节点${neighborsString}`);
         }
+    }
+
+    /**
+     * 图的广度优先遍历
+     */
+    bfs () {
+    }
+
+    /**
+     * 图的深度优先遍历
+     */
+    dfs () {
     }
 }

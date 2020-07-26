@@ -14,7 +14,11 @@ class Graph {
      * 添加节点
      */
     addNode (node) {
-        this.adjacencyList.set(node, []);
+        if (!this.adjacencyList.has(node)) {
+            this.adjacencyList.set(node, []);
+        } else {
+            throw new Error('节点已存在')
+        }
     }
 
     /**
@@ -23,9 +27,14 @@ class Graph {
      * form 节点2
      */
     addEdge (to, from) {
-        // 无向图，所以边是连接两边的
-        this.adjacencyList.get(to).push(from);
-        this.adjacencyList.get(from).push(to);
+        if (
+            this.adjacencyList.has(to) &&
+            this.adjacencyList.has(from)
+        ) {
+            // 无向图，所以边是连接两边的
+            this.adjacencyList.get(to).push(from);
+            this.adjacencyList.get(from).push(to);
+        }
     }
 
     print () {

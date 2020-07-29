@@ -38,25 +38,19 @@ class Graph {
         const L = this.matrix.length;
         for (let i = 0; i < L; i++) {
             const current = i;
-            const neighbors = this.matrix[i].filter((m, index) => {
+            let neighbors = this.matrix[i].map((m, index) => {
                 if (
                     index !== i &&
                     m === 1
                 ) {
-                    return true;
+                    return index;
                 }
-                return false
+                return null;
             });
+            neighbors = neighbors.filter(n => n !== null);
             const neighborsString = neighbors.join(' ');
             console.log(`节点${current}, 相邻节点${neighborsString}`);
         }
     }
 }
 
-const graph = new Graph();
-graph.addNode();
-graph.addNode();
-graph.addNode();
-graph.addEdge(0, 1);
-graph.addEdge(0, 2);
-console.log(graph.print())

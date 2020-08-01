@@ -2,12 +2,10 @@
  * 无向图
  */
 class Graph {
-    constructor (noOfNode) {
+    constructor () {
         // key ～ 节点
         // value ～ 相邻节点的列表
         this.adjacencyList = new Map();
-        // 节点的数量
-        this.noOfVertices = noOfNode;
     }
 
     /**

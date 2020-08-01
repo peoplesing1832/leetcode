@@ -54,7 +54,7 @@ class PriorityQueue {
     }
 
     isEmpty () {
-        return this.priorityQueue === 0;
+        return this.priorityQueue.length === 0;
     }
 }
 
@@ -69,27 +69,44 @@ graph.addNode('C')
 graph.addNode('D')
 graph.addNode('finish')
 // 添加边以及权重
-graph.addNode('start', 'A', 5)
-graph.addNode('start', 'B', 2)
-graph.addNode('A', 'B', 8)
-graph.addNode('A', 'C', 4)
-graph.addNode('A', 'D', 2)
-graph.addNode('B', 'D', 7)
-graph.addNode('C', 'D', 6)
-graph.addNode('C', 'finish', 3)
-graph.addNode('D', 'finish', 1)
+graph.addEdge('start', 'A', 5)
+graph.addEdge('start', 'B', 2)
+graph.addEdge('A', 'B', 8)
+graph.addEdge('A', 'C', 4)
+graph.addEdge('A', 'D', 2)
+graph.addEdge('B', 'D', 7)
+graph.addEdge('C', 'D', 6)
+graph.addEdge('C', 'finish', 3)
+graph.addEdge('D', 'finish', 1)
 
 const Dijkstra = (graph, node) => {
-    if (this.adjacencyList.has(node)) {
-        const hash = {};
-        const nodes = this.adjacencyList.keys();
-        for (let node of nodes) {
+    if (graph.adjacencyList.has(node)) {
+        const pq = new PriorityQueue();
+        const timeHash = {};
+        const backtrace = {};
+        const nodes = graph.adjacencyList.keys();
+        for (let key of nodes) {
             // 默认距离为无限大
-            hash[node] = Number.POSITIVE_INFINITY
+            timeHash[key] = Number.POSITIVE_INFINITY
         }
-        hash[node] = 0;
+        // 自身到自身的距离是0
+        timeHash[node] = 0;
+        pq.enqueue([node, 0]);
+        while (!pq.isEmpty()) {
+            const [currentNode, currentNodeWeight] = pq.dequeue();
+            const list = graph.adjacencyList.get(currentNode);
+            for (let i = 0; i < list.length; i++) {
+                const [nextNode, nextNodeWeight] = list[i];
+                let time = timeHash[currentNode] + nextNodeWeight;
+                if (time < timeHash[nextNode]) {
+                    timeHash[nextNode] = time;
+                    backtrace[nextNode] = currentNode;
+                    pq.enqueue([nextNode, time]);
+                }
+            }
+        }
 
-        return hash;
+        return timeHash;
     }
     return null
 }

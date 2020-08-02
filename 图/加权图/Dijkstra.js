@@ -33,30 +33,23 @@ class Graph {
 /**
  * 优先队列
  */
-// class PriorityQueue {
-//     constructor () {
-//         this.priorityQueue = []
-//     }
+class Queue {
+    constructor () {
+        this.queue = []
+    }
 
-//     enqueue (element) {
-//         this.priorityQueue.push(element);
-//         // 对优先队列进行排序，权重越低（距离短）的优先级越高
-//         this.priorityQueue.sort((a, b) => {
-//             // node 节点， weight 节点的权重
-//             const [node1, weight1] = a;
-//             const [node2, weight2] = b;
-//             return weight1 - weight2;
-//         });
-//     }
+    enqueue (element) {
+        this.queue.push(element);
+    }
 
-//     dequeue () {   
-//         return this.priorityQueue.shift();
-//     }
+    dequeue () {   
+        return this.queue.shift();
+    }
 
-//     isEmpty () {
-//         return this.priorityQueue.length === 0;
-//     }
-// }
+    isEmpty () {
+        return this.queue.length === 0;
+    }
+}
 
 
 // 创建加权图
@@ -79,39 +72,52 @@ graph.addEdge('C', 'D', 6)
 graph.addEdge('C', 'finish', 3)
 graph.addEdge('D', 'finish', 1)
 
-// const Dijkstra = (graph, node) => {
-//     if (graph.adjacencyList.has(node)) {
-//         const pq = new PriorityQueue();
-//         const timeHash = {};
-//         const nodes = graph.adjacencyList.keys();
-//         for (let key of nodes) {
-//             // 默认距离为无限大
-//             timeHash[key] = Number.POSITIVE_INFINITY
-//         }
-//         // 自身到自身的距离是0
-//         timeHash[node] = 0;
-//         pq.enqueue([node, 0]);
-//         while (!pq.isEmpty()) {
-//             const [currentNode, currentNodeWeight] = pq.dequeue();
-//             const list = graph.adjacencyList.get(currentNode);
-//             for (let i = 0; i < list.length; i++) {
-//                 const [nextNode, nextNodeWeight] = list[i];
-//                 let time = timeHash[currentNode] + nextNodeWeight;
-//                 if (time < timeHash[nextNode]) {
-//                     timeHash[nextNode] = time;
-//                     pq.enqueue([nextNode, time]);
-//                 }
-//             }
-//         }
-
-//         return timeHash;
-//     }
-//     return null
-// }
-
-const Dijkstra = (graph, node) => {
+/**
+ * 
+ * @param graph 图
+ * @param startNode 开始的节点
+ * @param endNode 结束的节点
+ */
+const Dijkstra = (graph, startNode, endNode) => {
+    if (
+        graph.adjacencyList.has(startNode) &&
+        graph.adjacencyList.has(endNode) &&
+        endNode !== startNode
+    ) {
+        const queue = new Queue();
+        const path = [];
+        const timeHash = {};
+        const backHash = {};
+        
+        const nodes = graph.adjacencyList.keys();
+        for (let node of nodes) {
+            // 默认距离为无限大
+            timeHash[node] = Number.POSITIVE_INFINITY
+        }
+        // 起始点的距离是0
+        timeHash[startNode] = 0;
+        queue.enqueue([startNode, 0]);
+        while (!queue.isEmpty()) {
+            const [currentNode] = queue.dequeue();
+            const list = graph.adjacencyList.get(currentNode);
+            for (let i = 0; i < list.length; i++) {
+                const [nextNode, nextNodeWeight] = list[i];
+                let time = timeHash[currentNode] + nextNodeWeight;
+                if (time < timeHash[nextNode]) {
+                    timeHash[nextNode] = time;
+                    backHash[nextNode] = currentNode;
+                    queue.enqueue([nextNode, time]);
+                }
+            }
+        }
+        let lastNode = endNode
+        // 使用回溯对象，查询最短路径
+        while (startNode !== lastNode) {
+            path.unshift(lastNode)
+            lastNode = backHash[lastNode];
+        }
+        path.unshift(startNode);
+        return `最短路径: ${path.join(' --> ')}, 所花费的时间: ${timeHash[endNode]}`
+    }
+    return -1
 }
-
-console.log(
-    Dijkstra(graph, 'start')
-)

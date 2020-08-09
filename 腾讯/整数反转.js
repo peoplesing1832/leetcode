@@ -4,21 +4,21 @@ class MathStack {
     }
 
     pop () {
-        if (~~this.num > 0) {
+        if (Math.floor(this.num) > 0) {
             let pop = this.num % 10;
             this.num /= 10;
-            this.num = ~~this.num;
+            this.num = Math.floor(this.num);
             return pop;
         }
     }
 
     push (n) {
-        this.num = ~~this.num * 10 + n;
+        this.num = Math.floor(this.num) * 10 + n;
         return this.num;
     }
 
     isEmpty () {
-        return ~~this.num === 0
+        return Math.floor(this.num) === 0
     }
 }
 
@@ -27,8 +27,8 @@ class MathStack {
  * @return {number}
  */
 var reverse = function(x) {
-    x = Math.abs(x);
     const signBit = x > 0;
+    x = Math.abs(x);
     const params = new MathStack(x);
     const result = new MathStack(0);
     while(!params.isEmpty()) {

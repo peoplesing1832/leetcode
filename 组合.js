@@ -21,11 +21,13 @@ var combine = function(n, k) {
     const merge = (head, other) => {
         if (other.length && head.length < k) {
             for (let i = 0; i < other.length; i++) {
-                const temp = [...other];
+                let temp = [...other];
                 temp.splice(i, 1);
+                // 避免一些不必要的递归
+                temp = temp.filter(item => item > other[i]);
                 merge([...head, other[i]], [...temp]);
             }
-        } else {
+        } else if (head.length === k) {
             head.sort((m, n) => m - n);
             const key = head.join(',');
             if (!hash[key]) {
@@ -36,12 +38,12 @@ var combine = function(n, k) {
     }
 
     for (let i = 0; i < collection.length; i++) {
-        const temp = [...collection];
+        let temp = [...collection];
         temp.splice(i, 1);
+        // 避免一些不必要的递归
+        temp = temp.filter(item => item > collection[i]);
         merge([collection[i]], [...temp]);
     }
 
     return result;
 };
-
-

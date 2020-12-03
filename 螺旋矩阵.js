@@ -8,7 +8,8 @@ var spiralOrder = function(matrix) {
     const total = w * h;
     const hash = {};
     const result = [];
-
+    
+    let direction = 'left';
     let x = 0;
     let y = 0;
 
@@ -22,6 +23,7 @@ var spiralOrder = function(matrix) {
     }
 
     const left = (x, y) => {
+        direction = 'left'
         const nextX = x + 1;
         const nextY = y;
         if (isOutOfBounds(nextX, nextY)) {
@@ -32,6 +34,7 @@ var spiralOrder = function(matrix) {
     }
 
     const bottom = (x, y) => {
+        direction = 'bottom'
         const nextX = x;
         const nextY = y + 1;
         if (isOutOfBounds(nextX, nextY)) {
@@ -42,6 +45,7 @@ var spiralOrder = function(matrix) {
     }
 
     const right = (x, y) => {
+        direction = 'right'
         const nextX = x - 1;
         const nextY = y;
         if (isOutOfBounds(nextX, nextY)) {
@@ -52,6 +56,7 @@ var spiralOrder = function(matrix) {
     }
 
     const top = (x, y) => {
+        direction = 'top'
         const nextX = x;
         const nextY = y - 1;
         if (isOutOfBounds(nextX, nextY)) {
@@ -67,7 +72,21 @@ var spiralOrder = function(matrix) {
         result.push(item);
         // 避免无限递归
         if (i < total - 1) {
-            const [nextX, nextY] = left(x, y);
+            let nextX, nextY
+            switch (direction) {
+                case 'left':
+                    [nextX, nextY] = left(x, y);
+                    break;
+                case 'bottom':
+                    [nextX, nextY] = bottom(x, y);
+                    break;
+                case 'right':
+                    [nextX, nextY] = right(x, y);
+                    break;
+                case 'top':
+                    [nextX, nextY] = top(x, y);
+                    break
+            }
             x = nextX;
             y = nextY;
         }        

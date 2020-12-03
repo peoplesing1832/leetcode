@@ -1,14 +1,3 @@
-// 给定一个正整数 n，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的正方形矩阵。
-
-// 示例:
-
-// 输入: 3
-// 输出:
-// [
-//  [ 1, 2, 3 ],
-//  [ 8, 9, 4 ],
-//  [ 7, 6, 5 ]
-// ]
 
 /**
  * @param {number} n
@@ -31,9 +20,13 @@ var generateMatrix = function(n) {
     let x = 0;
     let y = 0;
 
+    for (let i = 0; i < n; i++) {
+        result.push([])
+    }
+
     const isOutOfBounds = (x, y) => {
         if (
-            x >= w || y >= h || x < 0 || y < 0 || hash[`${x}${y}`]
+            x >= w || y >= h || x < 0 || y < 0 || hash[`${x},${y}`]
         ) {
             return true;
         }
@@ -45,7 +38,8 @@ var generateMatrix = function(n) {
         const nextX = x + 1;
         const nextY = y;
         if (isOutOfBounds(nextX, nextY)) {
-            return bottom(x, y)
+            direction = 'bottom'
+            return [x, y + 1]
         } else {
             return [nextX, nextY]
         }
@@ -56,7 +50,8 @@ var generateMatrix = function(n) {
         const nextX = x;
         const nextY = y + 1;
         if (isOutOfBounds(nextX, nextY)) {
-            return right(x, y)
+            direction = 'right'
+            return [x - 1, y]
         } else {
             return [nextX, nextY]
         }
@@ -67,7 +62,8 @@ var generateMatrix = function(n) {
         const nextX = x - 1;
         const nextY = y;
         if (isOutOfBounds(nextX, nextY)) {
-            return top(x, y)
+            direction = 'top'
+            return [x, y - 1]
         } else {
             return [nextX, nextY]
         }
@@ -78,7 +74,9 @@ var generateMatrix = function(n) {
         const nextX = x;
         const nextY = y - 1;
         if (isOutOfBounds(nextX, nextY)) {
-            return left(x, y)
+            
+            direction = 'left'
+            return [x + 1, y]
         } else {
             return [nextX, nextY]
         }
@@ -86,12 +84,9 @@ var generateMatrix = function(n) {
 
     for (let i = 1; i <= n ** 2; i++) {
         const item = i;
-        hash[`${x}${y}`] = true;
-        if (!result[y]) {
-            result[y] = []
-        }
+        hash[`${x},${y}`] = true;
         result[y][x] = item;
-        if (i < n ** 2 - 1) {
+        if (i < n ** 2) {
             let nextX, nextY
             switch (direction) {
                 case 'left':
@@ -114,5 +109,3 @@ var generateMatrix = function(n) {
 
     return result;
 };
-
-console.log(generateMatrix(3));

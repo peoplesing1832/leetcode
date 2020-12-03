@@ -15,7 +15,7 @@ var spiralOrder = function(matrix) {
 
     const isOutOfBounds = (x, y) => {
         if (
-            x >= w || y >= h || x < 0 || y < 0 || hash[`${x}${y}`]
+            x >= w || y >= h || x < 0 || y < 0 || hash[`${x},${y}`]
         ) {
             return true;
         }
@@ -68,7 +68,7 @@ var spiralOrder = function(matrix) {
 
     for (let i = 0; i < total; i++) {
         let item = matrix[y][x];
-        hash[`${x}${y}`] = true;
+        hash[`${x},${y}`] = true;
         result.push(item);
         // 避免无限递归
         if (i < total - 1) {

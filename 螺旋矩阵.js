@@ -1,25 +1,3 @@
-// 给定一个包含 m x n 个元素的矩阵（m 行, n 列），请按照顺时针螺旋顺序，返回矩阵中的所有元素。
-
-// 示例 1:
-
-// 输入:
-// [
-//  [ 1, 2, 3 ],
-//  [ 4, 5, 6 ],
-//  [ 7, 8, 9 ]
-// ]
-// 输出: [1,2,3,6,9,8,7,4,5]
-// 示例 2:
-
-// 输入:
-// [
-//   [1, 2, 3, 4],
-//   [5, 6, 7, 8],
-//   [9,10,11,12]
-// ]
-// 输出: [1,2,3,4,8,12,11,10,9,5,6,7]
-
-
 /**
  * @param {number[][]} matrix
  * @return {number[]}
@@ -27,13 +5,73 @@
 var spiralOrder = function(matrix) {
     const w = matrix[0].length;
     const h = matrix.length;
-    const length = w * h;
+    const total = w * h;
+    const hash = {};
     const result = [];
 
-    let turns = 0;
     let x = 0;
     let y = 0;
-    for (let i = 0; i < length; i++) {
-        
+
+    const isOutOfBounds = (x, y) => {
+        if (
+            x >= w || y >= h || x < 0 || y < 0 || hash[`${x}${y}`]
+        ) {
+            return true;
+        }
+        return false;
     }
+
+    const left = (x, y) => {
+        const nextX = x + 1;
+        const nextY = y;
+        if (isOutOfBounds(nextX, nextY)) {
+            return bottom(x, y)
+        } else {
+            return [nextX, nextY]
+        }
+    }
+
+    const bottom = (x, y) => {
+        const nextX = x;
+        const nextY = y + 1;
+        if (isOutOfBounds(nextX, nextY)) {
+            return right(x, y)
+        } else {
+            return [nextX, nextY]
+        }
+    }
+
+    const right = (x, y) => {
+        const nextX = x - 1;
+        const nextY = y;
+        if (isOutOfBounds(nextX, nextY)) {
+            return top(x, y)
+        } else {
+            return [nextX, nextY]
+        }
+    }
+
+    const top = (x, y) => {
+        const nextX = x;
+        const nextY = y - 1;
+        if (isOutOfBounds(nextX, nextY)) {
+            return left(x, y)
+        } else {
+            return [nextX, nextY]
+        }
+    }
+
+    for (let i = 0; i < total; i++) {
+        let item = matrix[y][x];
+        hash[`${x}${y}`] = true;
+        result.push(item);
+        // 避免无限递归
+        if (i < total - 1) {
+            const [nextX, nextY] = left(x, y);
+            x = nextX;
+            y = nextY;
+        }        
+    }
+
+    return result;
 };

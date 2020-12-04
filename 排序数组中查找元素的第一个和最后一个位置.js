@@ -8,7 +8,7 @@ var searchRange = function(nums, target) {
     // 左边界
     let leftIndex = -1;
     // // 右边界
-    let rightIndex = nums.length - 1;
+    let rightIndex = nums.length;
 
     // 寻找左边界
     const binarySearchLeft = (arr, target, baseLength) => {
@@ -35,7 +35,7 @@ var searchRange = function(nums, target) {
     }
 
     // 寻找右边界(寻找第一个大于target的节点)
-    // 由于数组是
+
     const binarySearchRight = (arr, target, baseLength) => {
         if (arr.length) {
             const len = arr.length;
@@ -48,7 +48,7 @@ var searchRange = function(nums, target) {
                 const right = arr.slice(centerIndex + 1);
                 if (center > target) {
                     rightIndex = centerIndex + baseLength;
-                    // 继续查找, 因为可能不是最接近的比,找到第一个比target大的
+                    // 继续查找, 因为可能不是最接近的,需要找到最接近的比target大的
                     binarySearchRight(left, target, baseLength);
                 } else {
                     binarySearchRight(right, target, baseLength + left.length + 1);
@@ -57,11 +57,11 @@ var searchRange = function(nums, target) {
         }
     }
 
-    // binarySearchLeft(nums, target, 0);
+    binarySearchLeft(nums, target, 0);
     binarySearchRight(nums, target, 0);
 
-    // console.log(leftIndex)
-    console.log(rightIndex)
+    if (leftIndex === -1) {
+        return [-1, -1];
+    }
+    return [leftIndex, rightIndex-1]
 };
-
-searchRange([0, 1, 1, 2, 3], 0)

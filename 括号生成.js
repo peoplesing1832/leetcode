@@ -1,6 +1,7 @@
 /**
  * @param {number} n
  * @return {string[]}
+ // 可以优化下
  */
 var generateParenthesis = function(n) {
     // 剪枝的条件：如果 ( 和 ) 相互抵消，堆栈为空，) 作为开头，必然是无效的 

@@ -4,6 +4,7 @@
  */
 var generateParenthesis = function(n) {
     // 剪枝的条件：如果 ( 和 ) 相互抵消，堆栈为空，) 作为开头，必然是无效的 
+    // 此时就没有进行递归下去的必要
     const result = [];
     const leftCollection = [];
     const rightCollection = [];
@@ -11,10 +12,6 @@ var generateParenthesis = function(n) {
     for (let i = 0; i < n; i++) {
         leftCollection.push('(')
         rightCollection.push(')')
-    }
-
-    // (())
-    const isValid = (str) => {
     }
 
     const fn = (head, num, left, right) => {

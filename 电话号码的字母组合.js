@@ -1,17 +1,9 @@
-// 2 - abc
-// 3 - def
-// 4 - ghi
-// 5 - jkl
-// 6 - mno
-// 7 - pqrs
-// 8 - tuv
-// 9 - wxyz
-
 /**
  * @param {string} digits
  * @return {string[]}
  */
 var letterCombinations = function(digits) {
+
     const map = {
         2: ['a', 'b', 'c'],
         3: ['d', 'e', 'f'],
@@ -24,9 +16,22 @@ var letterCombinations = function(digits) {
     }
     const arr = digits.split('')
     const result = []
-    
-    const fn = () => {
+
+    const fn = (head, arr) => {
+        if (arr.length) {
+            const key = arr.splice(0, 1)[0]
+            const collection = map[key]
+            for (let i = 0; i < collection.length; i++) {
+                fn(`${head}${collection[i]}`, [...arr])
+            }
+        } else {
+            if (head) {
+                result.push(head)
+            }
+        }
     }
+
+    fn('', [...arr]);
 
     return result;
 };

@@ -47,3 +47,57 @@ var combine = function(n, k) {
 
     return result;
 };
+
+
+
+
+
+
+
+// 不使用hash
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {number[][]}
+ */
+var combine = function(n, k) {
+    const arr = []
+    const result = []
+
+    // 初始化
+    for (let i = 1; i <= n; i++) {
+        arr.push(i)
+    }
+
+    if (arr.length === k) {
+        // 如果k等于长度，直接返回集合
+        return [arr];
+    }
+
+    const fn = (head, tail, k) => {
+        if (k <= 0) {
+           result.push(head) 
+        } else {
+            for (let i = 0; i < tail.length; i++) {
+                fn([...head, tail[i]], tail.slice(i + 1), k - 1)
+            }
+        }
+    }
+
+    for (let i = 0; i < arr.length; i++) {
+        if (k > 0) {
+            fn([arr[i]], arr.slice(i + 1), k - 1);
+        }
+    }
+
+    return result;
+};
+
+
+
+
+
+
+
+
+

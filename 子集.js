@@ -8,7 +8,6 @@ var subsets = function(nums) {
     result.push([])
 
     const fn = (head, tail) => {
-        // console.log(head, tail)
         for (let i = 0; i < tail.length; i++) {
             result.push([...head, tail[i]])
             if (tail.slice(i + 1)) {

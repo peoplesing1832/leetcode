@@ -67,3 +67,33 @@ var generateParenthesis = function(n) {
 
     return result;
 };
+
+// 同层减枝
+/**
+ * @param {number} n
+ * @return {string[]}
+ */
+var generateParenthesis = function(n) {
+    const result = []
+    const left = []
+    const rigth = []
+
+    const fn = (head, leftNum, rightNum) => {
+        if (leftNum === n && rightNum === n) {
+            result.push(head)
+        } else {
+            if (leftNum >= rightNum) {
+                if (leftNum < n) {
+                    fn(`${head}(`, leftNum + 1, rightNum)
+                }
+                if (rightNum < n && rightNum + 1 <= leftNum) {
+                    fn(`${head})`, leftNum, rightNum + 1)
+                }
+            }
+        }
+    }
+
+    fn('', 0, 0);
+
+    return result;
+};

@@ -24,19 +24,6 @@ var solveNQueens = function(n) {
         }
     }
 
-    const resetAttackRange = () => {
-        for (let key in rowAttackRange) {
-            rowAttackRange[key] = true
-            colAttackRange[key] = true
-        }
-        for (let key in letDiagonalAttackRange) {
-            letDiagonalAttackRange[key] = true
-        }
-        for (let key in rightDiagonalAttackRange) {
-            rightDiagonalAttackRange[key] = true
-        }
-    }
-
     initializeAttackRange()
 
     // 判读是否允许放置
@@ -49,6 +36,7 @@ var solveNQueens = function(n) {
 
     const fn = (row, collection) => {
         if (row === n) {
+            result.push([...collection])
             return
         } else {
             for (let j = 0; j < n; j++) {
@@ -88,9 +76,24 @@ var solveNQueens = function(n) {
             1,
             temp
         )
-        resetAttackRange()
-        if (temp.length === n) {
-            result.push(temp)
-        }
+        rowAttackRange[0] = true
+        colAttackRange[j] = true
+        letDiagonalAttackRange[0 + j] = true
+        rightDiagonalAttackRange[0 - j] = true
     }
+
+    
+    // 对result做处理
+    for (let i = 0; i < result.length; i++) {
+        let temp = new Array(n).fill(new Array(n).fill('.'))
+        for (let j = 0; j < n; j++) {
+            const { x, y } = result[i][j]
+            const arr = [...temp[y]]
+            arr[x] = 'Q'
+            temp[y] = arr.join('')
+        } 
+        result[i] = temp     
+    }
+
+    return result
 };

@@ -3,10 +3,10 @@
  * @return {number}
  */
 var maxSubArray = function(nums) {
-    let leftMax = Number.MIN_SAFE_INTEGER
-    let middMax = Number.MIN_SAFE_INTEGER
-    let rightMax = Number.MIN_SAFE_INTEGER
 
+    /**
+     * 跨越中间的最大值
+     */
     const getMiddMax = (left, right) => {
         let leftMax = Number.MIN_SAFE_INTEGER
         let rightMax = Number.MIN_SAFE_INTEGER
@@ -23,64 +23,20 @@ var maxSubArray = function(nums) {
         return rightMax + leftMax
     }
 
-    const getLeftMax = (arr) => {
+    const divideAndConquer = (arr) => {
+        if (arr.length <= 1) {
+            // 得到了最小子问题的解答
+            return arr.length === 1 ? arr[0] : Number.MIN_SAFE_INTEGER;
+        }
+        // 继续拆解子问题
         const middIndex = Math.floor(arr.length / 2)
         const left = arr.slice(0, middIndex)
         const right = arr.slice(middIndex)
-        const midd = getMiddMax(left, right)
-        if (left.length > 1) {
-            getLeftMax(left)
-        } else if (left.length === 1) {
-            leftMax = Math.max(leftMax, left[0])
-        }
-        if (right.length > 1) {
-            getLeftMax(right)
-        } else if (right.length === 1) {
-            leftMax = Math.max(leftMax, right[0])
-        }
-        middMax = Math.max(middMax, midd)
-    }
+        const middMax = getMiddMax(left, right)
+        const leftMax = divideAndConquer(left)
+        const rightMax = divideAndConquer(right)
+        return Math.max(middMax, leftMax, rightMax)
+    } 
 
-    const getRightMax = (arr) => {
-        const middIndex = Math.floor(arr.length / 2)
-        const left = arr.slice(0, middIndex)
-        const right = arr.slice(middIndex)
-        const midd = getMiddMax(left, right)
-        if (left.length > 1) {
-            getRightMax(left)
-        } else if (left.length === 1) {
-            rightMax = Math.max(rightMax, left[0])
-        }
-        if (right.length > 1) {
-            getRightMax(right)
-        } else if (right.length === 1) {
-            rightMax = Math.max(rightMax, right[0])
-        }
-        middMax = Math.max(middMax, midd)
-    }
-
-    const getMax = (arr) => {
-        const middIndex = Math.floor(arr.length / 2)
-        const left = arr.slice(0, middIndex)
-        const right = arr.slice(middIndex)
-        const midd = getMiddMax(left, right)
-
-        if (left.length > 1) {
-            getLeftMax(left)
-        } else if (left.length === 1) {
-            leftMax = Math.max(leftMax, left[0])
-        }
-
-        if (right.length > 1) {
-            getRightMax(right)
-        } else if (right.length === 1) {
-            rightMax = Math.max(rightMax, right[0])
-        }
-
-        middMax = Math.max(middMax, midd)
-    }
-
-    getMax(nums)
-
-    return Math.max(leftMax, middMax, rightMax);
+    return divideAndConquer(nums)
 };

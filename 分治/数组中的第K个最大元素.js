@@ -1,41 +1,38 @@
 /**
- * @param {number[]} nums
- * @param {number} k
+ * @param {number[]} prices
  * @return {number}
  */
-var findKthLargest = function(nums, k) {
-    let result = null
+var maxProfit = function(prices) {
+    if (prices.length === 1 || prices.length === 0) {
+        return 0
+    }
 
-    const divideAndConquer = (arr, base) => {
-
-        if (arr.length === 1) {
-            result = arr[0]
-            return
+    // 获取横跨中间的最大值
+    const getMiddMax = (left, right) => {
+        let leftMax = Number.MAX_SAFE_INTEGER
+        let rightMax = Number.MIN_SAFE_INTEGER
+        for (let i = left.length - 1; i >= 0; i--) {
+            leftMax = Math.min(left[i], leftMax)
         }
-
-        const referenceValue = arr[0]
-        const min = []
-        const max = []
-        for (let i = 1; i < arr.length; i++) {
-            if (arr[i] > referenceValue) {
-                max.push(arr[i])
-            } else {
-                min.push(arr[i])
-            }
+        for (let i = 0; i < right.length; i++) {
+            rightMax = Math.max(right[i], rightMax)
         }
-        max.push(referenceValue)
-        const maxLen = max.length + base;
+        return rightMax - leftMax
+    }
 
-        if (maxLen >= k && max.length) {
-            // 说明k存在在max数组中
-            divideAndConquer(max, base)
-        } else if (maxLen < k && min.length) {
-            // 说明k存在在min数组中
-            divideAndConquer(min, maxLen)
+    const divideAndConquer = (arr) => {
+        if (arr.length === 2) {
+            return arr[1] > arr[0] ? arr[1] - arr[0] : 0
+        } else if (arr.length > 2) {
+            const middIndex = Math.floor(arr.length / 2)
+            const left = arr.slice(0, middIndex)
+            const right = arr.slice(middIndex)
+            const middMax = getMiddMax(left, right)
+            const leftMax = left.length === 1 ? 0 : Math.max(divideAndConquer(left), left[left.length - 1] - left[0])
+            const rightMax = right.length === 1 ? 0 : Math.max(divideAndConquer(right), right[right.length - 1] - right[0])
+            return Math.max(middMax, leftMax, rightMax)
         }
     }
 
-    divideAndConquer(nums, 0)
-
-    return result
+    return divideAndConquer(prices)
 };

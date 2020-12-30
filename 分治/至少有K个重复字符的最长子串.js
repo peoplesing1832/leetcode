@@ -8,6 +8,8 @@ var longestSubstring = function(s, k) {
         return 0
     }
 
+    let result = Number.MIN_SAFE_INTEGER;
+
     const getSplitDots = (str) => {
         let splitDots = []
         const hash = new Map()
@@ -20,20 +22,29 @@ var longestSubstring = function(s, k) {
                 hash.set(key, [...val, i])
             }
         }
-        const values = hash.values()   
-        for (let value of values) {
+        const entries = hash.entries()   
+        for (let [key, value] of entries) {
             if (value.length < k) {
-                splitDots = [...splitDots, ...value]
+                splitDots = [...splitDots, key]
             }
         }
-        splitDots.sort((a, b) => a - b)
         return splitDots
     }
 
     const divideAndConquer = (str) => {
         // 切割的点
         let splitDots = getSplitDots(str)
+        if (splitDots.length === 0) {
+            result = Math.max(result, str.length);
+        } else {
+            const arr = str.split(splitDots[0])
+            for (let i = 0; i < arr.length; i++) {
+                divideAndConquer(arr[i])
+            }
+        }
     }
 
-    return divideAndConquer(s)
+    divideAndConquer(s)
+
+    return result;
 };

@@ -32,7 +32,7 @@ var multiply = function(num1, num2) {
         if (str1.length > 1) {
             const str1MiddIndex = Math.floor(str1.length / 2)
             str1High = str1.slice(0, str1MiddIndex)
-            str1Low = str2.slice(str1MiddIndex)
+            str1Low = str1.slice(str1MiddIndex)
             str1Carry = str1Low.length
         } else {
             str1High = str1
@@ -49,27 +49,32 @@ var multiply = function(num1, num2) {
             str2Low = '0'
         }
 
+        
         if (str1High.length <= 1 && str2High.length <= 1) {
             r1 = String(Number(str1High) * Number(str2High)) + padZero(str1Carry + str2Carry)
         } else {
+            // console.log(str1High, str2High)
             r1 = divideAndConquer(str1High, str2High) + padZero(str1Carry + str2Carry)
         }
 
         if (str1High.length <= 1 && str2Low.length <= 1) {
             r2 = String(Number(str1High) * Number(str2Low)) + padZero(str1Carry)
         } else {
+            // console.log(str1High, str2Low)
             r2 = divideAndConquer(str1High, str2Low) + padZero(str1Carry)
         }
 
         if (str1Low.length <= 1 && str2High.length <= 1) {
             r3 = String(Number(str1Low) * Number(str2High)) + padZero(str2Carry)
         } else {
+            // console.log(str1Low, str2High)
             r3 = divideAndConquer(str1Low, str2High) + padZero(str2Carry)
         }
 
         if (str1Low.length <= 1 && str2Low.length <= 1) {
             r4 = String(Number(str1Low) * Number(str2Low)) + ''
         } else {
+            // console.log(str1Low, str1Low)
             r4 = divideAndConquer(str1Low, str2Low)
         }
 
@@ -79,4 +84,3 @@ var multiply = function(num1, num2) {
     return divideAndConquer(num1, num2)
 };
 
-console.log(multiply('5678', '1234'))

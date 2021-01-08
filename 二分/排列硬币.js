@@ -15,6 +15,8 @@ var arrangeCoins = function(n) {
         return 1
     }
 
+    
+
     const getNumberOfCoinsByLine = (line) => {
         return ((line + 1) * line) / 2;
     }
@@ -33,5 +35,14 @@ var arrangeCoins = function(n) {
             start = midd + 1
         }
     }
+
+    if (getNumberOfCoinsByLine(start) <= n && getNumberOfCoinsByLine(end) > n) {
+        return start
+    } else if (getNumberOfCoinsByLine(start) > n && getNumberOfCoinsByLine(end) <= n) {
+        return end
+    } else if (getNumberOfCoinsByLine(start) <= n && getNumberOfCoinsByLine(end) <= n) {
+        return end
+    }
+
     return end
 };

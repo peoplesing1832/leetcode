@@ -75,7 +75,35 @@
 //  * @param {number} N
 //  * @param {number} K
 //  * @return {number}
-//  * 思路三: 找规律
 //  */
-var kthGrammar = function(N, K) {    
+// 每一行的排列
+//              0
+//          /        \   
+//      0                1
+//    /   \            /    \
+//  0       1        1       0
+// / \     /  \     /  \    / \ 
+//0   1   1    0   1    0  0   1
+
+// 每一行的序号
+//              1
+//          /        \   
+//      1                2
+//    /   \            /    \
+//  1       2        3       4
+// / \     /  \     /  \    / \ 
+//1   2   3    4   5    6  7   8
+
+var kthGrammar = function(N, K) { 
+    if (N == 1) return 0
+    
+    let F = kthGrammar(N - 1, Math.floor((K + 1) / 2))
+
+    if (K & 1 === 1) {
+        // 如果是奇数
+        return F
+    } else {
+        // 如果是偶数
+        return F === 0 ? 1 : 0
+    }
 }

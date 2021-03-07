@@ -4,7 +4,7 @@
  */
 var findRightInterval = function(intervals) {
     const arr = []
-    // 首先记录索引
+    // 首先记录原始索引
     const map = new Map()
     for (let i = 0; i < intervals.length; i++) {
         map.set(intervals[i], i)

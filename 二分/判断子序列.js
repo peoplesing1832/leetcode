@@ -23,16 +23,16 @@ var isSubsequence = function(s, t) {
         }
     }
 
-    const binarySearch = (start, end, arr) => {
+    const binarySearch = (start, end, arr, target) => {
         if (start <= end) {
             const middIndex = Math.floor(((start + end) / 2))
             const midd = arr[middIndex]
-            if (midd > index) {
+            if (midd > target) {
                 index = midd
-                // 查找最小的
-                binarySearch(start, middIndex - 1, arr)
+                // 需要查找最小的，所以继续向下查找
+                binarySearch(start, middIndex - 1, arr, target)
             } else if (midd <= index) {
-                binarySearch(middIndex + 1, end, arr)
+                binarySearch(middIndex + 1, end, arr, target)
             }
         }
     }
@@ -42,7 +42,7 @@ var isSubsequence = function(s, t) {
         const arr = map[key]
         if (arr) {
             let prev = index
-            binarySearch(0, arr.length - 1, arr)
+            binarySearch(0, arr.length - 1, arr, index)
             if (prev === index) {
                 result = false
                 break

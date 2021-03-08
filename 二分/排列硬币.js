@@ -1,5 +1,4 @@
 // 行数一定在0和n之间
-
 const getArithmeticSeriesSum = (n, d) => {
     return n + (n * (n - 1) / 2) * d
 }

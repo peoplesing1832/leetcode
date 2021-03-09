@@ -29,3 +29,4 @@ var findDuplicate = function(nums) {
 
     return result
 };
+

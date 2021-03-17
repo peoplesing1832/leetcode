@@ -15,8 +15,8 @@ var minDays = function(bloomDay, m, k) {
         return -1
     }
 
-    const start = Math.min(...bloomDay)
-    const end = Math.max(...bloomDay)
+    const sortBloomDay = [...new Set(bloomDay)].sort((a, b) => a - b)
+    
     let result = null
 
     // 是否可以制作完成，如果第n天不能完成m朵画，那么n-1, n-2天肯定也不能完成
@@ -46,8 +46,9 @@ var minDays = function(bloomDay, m, k) {
     const binarySearch = (start, end) => {
         if (start <= end) {
             const middIndex = Math.floor(((start + end) / 2))
-            if (isOk(middIndex)) {
-                result = middIndex
+            const midd = sortBloomDay[middIndex]
+            if (isOk(midd)) {
+                result = midd
                 // 需要查找最小的，在往下查找
                 binarySearch(start, middIndex - 1);
                 return
@@ -58,9 +59,7 @@ var minDays = function(bloomDay, m, k) {
     }
 
 
-    binarySearch(start, end)
+    binarySearch(0, sortBloomDay.length - 1)
 
     return result
 };
-
-minDays([1,10,3,10,2], 3, 1)

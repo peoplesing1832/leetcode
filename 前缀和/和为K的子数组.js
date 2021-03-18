@@ -24,7 +24,7 @@ var subarraySum = function(nums, k) {
             } else if (j === i) {
                 intervalSum = nums[i]
             } else {
-                intervalSum = pre[i] - pre[j]
+                intervalSum = pre[i] - pre[j - 1]
             }
             if (intervalSum === k) {
                 count += 1

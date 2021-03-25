@@ -3,7 +3,9 @@
  * @param {number} K
  * @return {number}
  */
-// （pre[i] - pre[j - 1]) % K === 0 =>pre[i] % K === pre[j - 1] % K
+//（pre[i] - pre[j - 1]) % K === 0 
+// pre[i] % K === pre[j - 1] % K
+// 这道题目不是很理解，负数取模
 var subarraysDivByK = function(A, K) {
     let count = 0
     let preSum = 0
@@ -11,14 +13,10 @@ var subarraysDivByK = function(A, K) {
 
     for (let i = 0; i < A.length; i++) {
         preSum += A[i]
-        let key = preSum % K
+        const key = (preSum % K + K) % K
         if (hash[key]) {
             count += hash[key]
         }
-        if (key === 0) {
-            count += 1
-        }
-
         if (!hash[key]) {
             hash[key] = 1
         } else {
@@ -28,4 +26,3 @@ var subarraysDivByK = function(A, K) {
 
     return count
 };
-

@@ -12,7 +12,10 @@
     }
     
     // 构建前缀和矩阵
-    this.preSum = new Array(this.matrix.length).fill([])
+    this.preSum = []
+    for (let i = 0; i < this.matrix.length; i++) {
+        this.preSum.push([])
+    }
     for (let i = 0; i < this.matrix.length; i++) {
         for (let j = 0; j < this.matrix[0].length; j++) {
             if (i == 0 && j == 0) {
@@ -29,7 +32,7 @@
     // 前缀和矩阵额外添加一行一列
     // 添加一列
     for (let i = 0; i < this.preSum.length; i++) {
-        this.preSum[0].unshift(0)
+        this.preSum[i].unshift(0)
     }
     // 添加一行
     this.preSum.unshift(new Array(this.preSum[0].length).fill(0))
@@ -44,7 +47,7 @@
  */
 NumMatrix.prototype.sumRegion = function(row1, col1, row2, col2) {
     if (this.preSum) {
-        return this.preSum[row2][col2] + this.preSum[row1 -1][col2 - 1] - this.preSum[row2][col1 - 1] - this.preSum[row1 - 1][col2]
+        return this.preSum[row2 + 1][col2 + 1] + this.preSum[row1][col1] - this.preSum[row2 + 1][col1] - this.preSum[row1][col2 + 1]
     }
     return null
 };

@@ -2,12 +2,37 @@
  * @param {number[][]} matrix
  */
  var NumMatrix = function(matrix) {
+    // 原矩阵
     this.matrix = matrix
-    this.preSum = []
+    // 前缀和矩阵
+    this.preSum = null
 
-    for (let i = 0; i < this.matrix.length; i++) {
-        this.preSum.push([])
+    if (matrix.length === 0 || matrix[0].length === 0) {
+        return
     }
+    
+    // 构建前缀和矩阵
+    this.preSum = new Array(this.matrix.length).fill([])
+    for (let i = 0; i < this.matrix.length; i++) {
+        for (let j = 0; j < this.matrix[0].length; j++) {
+            if (i == 0 && j == 0) {
+                this.preSum[i][j] = this.matrix[i][j]
+            } else if (i == 0) {
+                this.preSum[i][j] = this.preSum[i][j - 1] + this.matrix[i][j]
+            } else if (j == 0) {
+                this.preSum[i][j] = this.preSum[i - 1][j] + this.matrix[i][j]
+            } else {
+                this.preSum[i][j] = this.preSum[i - 1][j] + this.preSum[i][j - 1] + this.matrix[i][j] - this.preSum[i - 1][j - 1]
+            }
+        }
+    }
+    // 前缀和矩阵额外添加一行一列
+    // 添加一列
+    for (let i = 0; i < this.preSum.length; i++) {
+        this.preSum[0].unshift(0)
+    }
+    // 添加一行
+    this.preSum.unshift(new Array(this.preSum[0].length).fill(0))
 };
 
 /** 
@@ -18,7 +43,10 @@
  * @return {number}
  */
 NumMatrix.prototype.sumRegion = function(row1, col1, row2, col2) {
-
+    if (this.preSum) {
+        return this.preSum[row2][col2] + this.preSum[row1 -1][col2 - 1] - this.preSum[row2][col1 - 1] - this.preSum[row1 - 1][col2]
+    }
+    return null
 };
 
 /**

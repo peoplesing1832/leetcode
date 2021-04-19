@@ -1,43 +1,33 @@
 /**
- * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
- * }
- */
-/**
  * @param {TreeNode} root
  * @return {number[]}
  */
 var rightSideView = function(root) {
+    if (!root) return []
 
-    const result = [];
-    const arrTree = [];
+    const result = []
 
-    // 层序遍历
-    const traversing = (node, level) => {
-        if (!node) {
-            return
-        }
-        if (!arrTree[level]) {
-            arrTree[level] = []
-        }
-        if (node.val !== null) {
-            arrTree[level].push(node.val)
-        }
-        if (node.left) {
-            traversing(node.left, level + 1)
-        }
-        if (node.right) {
-            traversing(node.right, level + 1)
+    const traverside = (nodes) => {
+        const len = nodes.length
+        if (len) {
+            const childs = []
+            for (let i = 0; i < len; i += 1) {
+                const node = nodes[i]
+                if (i === len - 1) {
+                    result.push(node.val)
+                }
+                if (node.left) {
+                    childs.push(node.left)
+                }
+                if (node.right) {
+                    childs.push(node.right)
+                }
+            }
+            traverside(childs)
         }
     }
-    
-    traversing(root, 0)
 
-    for (let i = 0; i < arrTree.length; i++) {
-        result.push(arrTree[i][arrTree[i].length - 1]);
-    }
+    traverside([root])
 
-    return result;
+    return result
 };
